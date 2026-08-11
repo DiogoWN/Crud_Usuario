@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font: normal 16pt Arial;
+    color: #333333; /*Cinza escuro */
+    line-height: 1.5; 
+}
+
+a {
+    text-decoration: none;
+    color: inherit; /* Herda a cor do elemento pai por padrão */
+}
+
+input, button{
+    width: 20rem;
+    height: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 0 0 gray;
+    cursor: pointer;
+}
+
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;  /* Coloca todos os elementos um em baixo do outro */
+    gap: 12px;               /* Define o espaço em pixels entre cada input automaticamente */
+    font: normal 18pt Arial;
+    font-size: clamp(14px, 5vw, 24px);/* Serve para fazer a adaptação do tamanho da tela 
+                                        (Mínimo, ponto de vista(vw), máximo)*/
+}
+
+.info{
+    background-color: yellowgreen;
+}
+
+#dataNasc{
+    zoom: 1.4;
+    width: 14.8rem;
+    height: 2rem;
+}
