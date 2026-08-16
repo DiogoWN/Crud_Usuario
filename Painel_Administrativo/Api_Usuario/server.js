@@ -6,6 +6,7 @@ app.use(express.static('public')) //Serve para o Express acessar o HTML e o CSS
 app.use(express.json()) //Serve poara o Express entender os dados em formato JSON 
 app.use(express.urlencoded({ extended: true })) //Serve para o Express receber as requisições do HTML e ler objetos mais complexos
 
+/*Formulário*/
 // Adiciona o usuário
 app.post('/usuario', async (req, res) => {
     const { nome, email, cpf, telefone, data_nascimento } = req.body //Pega os dados dos usuários
@@ -110,6 +111,24 @@ app.delete('/usuario/:id', async (req, res) => {
     } catch (error) {
         console.error('Erro ao deletar usuário:', error);
         res.status(500).send('Erro ao deletar usuário no banco de dados.');
+    }
+})
+
+/*Login*/
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body //Pega os dados do login
+
+    try {
+        const sql = 'SELECT * FROM credenciais WHERE email = ? AND senha = ?'
+        const [rows] = await pool.query(sql, [email, senha]); //Envia os dados dos usuários
+        
+        if(rows.length === 0){
+            return res.status(400).send('[ERRO!] E-mail ou Senha incorretos')
+        }
+        res.redirect('/lista_usuario.html')//Leva o para formulário
+    } catch (error) {
+        console.error('[ERRO!] Ao inserir no MySQL:', error)
+        res.status(500).send('[ERRO!] Ao tentar fazer login.')
     }
 })
 

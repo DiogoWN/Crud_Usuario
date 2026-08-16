@@ -11,6 +11,13 @@ CREATE TABLE  usuarios (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ativo BOOLEAN DEFAULT true
 );
+
+CREATE TABLE credenciais (
+    email VARCHAR(191) PRIMARY KEY,
+    senha VARCHAR(255) NOT NULL,
+    FOREIGN KEY (email) REFERENCES usuarios(email) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 select * from usuarios;
 
 SET SQL_SAFE_UPDATES = 0;

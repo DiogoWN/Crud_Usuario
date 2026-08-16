@@ -12,7 +12,7 @@ async function CarregarUsuario() {
 
         info.innerHTML = ''
 
-        usuarios.forEach(u => {
+        usuarios.forEach(u => { // Cria a lista dos usuários
             const tr = document.createElement('tr')
             tr.innerHTML = `
                 <td>${u.nome}</td>
@@ -60,6 +60,7 @@ async function AtualizarUsuario(id) {
 
         const novoNome = prompt("Digite o novo nome:", usuarioAtual.nome)
         const novoEmail = prompt("Digite o novo e-mail:", usuarioAtual.email)
+        const novoCPF = prompt("Digite o novo cpf:", usuarioAtual.cpf)
         const novoTelefone = prompt("Digite o novo telefone:", usuarioAtual.telefone)
         const novaDataBr = prompt("Digite a nova data de nascimento (DD/MM/YYYY):", usuarioAtual.data_nascimento)
 
@@ -78,7 +79,7 @@ async function AtualizarUsuario(id) {
             body: JSON.stringify({ //Serve para carregar os novos valores
                 nome: novoNome,
                 email: novoEmail,
-                cpf: usuarioAtual.cpf, //Mantém o cpf já digitado
+                cpf: novoCPF, 
                 telefone: novoTelefone,
                 data_nascimento: dataParaBanco
             })

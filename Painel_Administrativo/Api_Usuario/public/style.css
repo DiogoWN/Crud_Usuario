@@ -25,7 +25,17 @@ input, button{
     cursor: pointer;
 }
 
-.formulario {
+#login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;  /* Coloca todos os elementos um em baixo do outro */
+    gap: 12px;               /* Define o espaço em pixels entre cada input automaticamente */
+    font: normal 18pt Arial;
+    font-size: clamp(14px, 5vw, 24px)
+}
+
+#formulario {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,10 +44,6 @@ input, button{
     font: normal 18pt Arial;
     font-size: clamp(14px, 5vw, 24px);/* Serve para fazer a adaptação do tamanho da tela 
                                         (Mínimo, ponto de vista(vw), máximo)*/
-}
-
-.info{
-    background-color: yellowgreen;
 }
 
 #dataNasc{
