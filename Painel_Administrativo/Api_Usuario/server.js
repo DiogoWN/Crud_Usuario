@@ -9,12 +9,15 @@ app.use(express.urlencoded({ extended: true })) //Serve para o Express receber a
 /*Formulário*/
 // Adiciona o usuário
 app.post('/usuario', async (req, res) => {
-    const { nome, email, cpf, telefone, data_nascimento } = req.body //Pega os dados dos usuários
+    const { nome, email, cpf, telefone, data_nascimento, senha } = req.body //Pega os dados dos usuários
 
     try {
-        const sql = 'INSERT INTO usuarios (nome, email, cpf, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?)'
+        const sqlUsuario = 'INSERT INTO usuarios (nome, email, cpf, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?)';
+        await pool.query(sqlUsuario, [nome, email, cpf, telefone, data_nascimento]) //Envia os dados dos usuários
+        
+        const sqlCredencial = 'INSERT INTO credenciais (email, senha) VALUES (?, ?)'
+        await pool.query(sqlCredencial, [email, senha])
 
-        await pool.query(sql, [nome, email, cpf, telefone, data_nascimento]) //Envia os dados dos usuários
         res.redirect('/lista_usuario.html')//Leva o para a lista de usuários
     } catch (error) {
         console.error('[ERRO!] Ao inserir no MySQL:', error)
@@ -44,10 +47,11 @@ app.get('/usuario/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const sql = `
-            SELECT id, nome, email, cpf, telefone, 
-                   DATE_FORMAT(data_nascimento, '%d/%m/%Y') AS data_nascimento 
-            FROM usuarios 
-            WHERE id = ? AND (ativo = true OR ativo = 1)
+            SELECT u.id, u.nome, u.email, u.cpf, u.telefone, c.senha,
+                   DATE_FORMAT(u.data_nascimento, '%d/%m/%Y') AS data_nascimento 
+            FROM usuarios u
+            LEFT JOIN credenciais c ON u.email = c.email
+            WHERE u.id = ? AND (u.ativo = true OR u.ativo = 1)
         `;
         const [rows] = await pool.query(sql, [id]);
 
@@ -65,7 +69,7 @@ app.get('/usuario/:id', async (req, res) => {
 // Edita o usuário
 app.put('/usuario/:id', async (req, res) => {
     const { id } = req.params;
-    const { nome, email, cpf, telefone, data_nascimento } = req.body;
+    const { nome, email, cpf, telefone, data_nascimento, senha } = req.body;
 
     try {
         const sql = `
@@ -80,12 +84,17 @@ app.put('/usuario/:id', async (req, res) => {
             email, 
             cpf, 
             telefone, 
-            data_nascimento, 
+            data_nascimento,
             id
         ]);
 
         if (result.affectedRows === 0) {
             return res.status(404).send('Usuário não encontrado');
+        }
+
+        if (senha) {
+            const sqlCredencial = `UPDATE credenciais SET senha = ? WHERE email = ?`;
+            await pool.query(sqlCredencial, [senha, email]);
         }
 
         res.send('Usuário atualizado com sucesso');

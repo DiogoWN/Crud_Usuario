@@ -63,6 +63,7 @@ async function AtualizarUsuario(id) {
         const novoCPF = prompt("Digite o novo cpf:", usuarioAtual.cpf)
         const novoTelefone = prompt("Digite o novo telefone:", usuarioAtual.telefone)
         const novaDataBr = prompt("Digite a nova data de nascimento (DD/MM/YYYY):", usuarioAtual.data_nascimento)
+        const novaSenha = prompt("Digite sua nova senha:", usuarioAtual.senha)
 
         if (!novoNome || !novoEmail || !novoTelefone || !novaDataBr) {
             return alert("Nome, E-mail, Telefone e Data de nascimento são obrigatórios!")
@@ -81,7 +82,8 @@ async function AtualizarUsuario(id) {
                 email: novoEmail,
                 cpf: novoCPF, 
                 telefone: novoTelefone,
-                data_nascimento: dataParaBanco
+                data_nascimento: dataParaBanco,
+                senha: novaSenha
             })
         })
 
